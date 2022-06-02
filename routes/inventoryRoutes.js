@@ -5,7 +5,7 @@ const {
   setInventory,
   updateInventory,
   deleteInventory,
-} = require("../controllers/InventoryController");
+} = require("../controllers/inventoryController");
 
 router.get("/", getInventories);
 router.post("/", setInventory);
