@@ -2,17 +2,19 @@
   "name": "shopify-challenge-fall2022",
   "version": "1.0.0",
   "description": "Fall 2022 - Shopify Developer Intern Challenge",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "server": "nodemon server.js",
-    "client": "npm start --prefix frontend"
+    "start": "node index.js",
+    "server": "nodemon index.js",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Samiha Nanjiba",
   "license": "ISC",
   "dependencies": {
     "colors": "^1.4.0",
+    "concurrently": "^7.2.1",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-async-handler": "^1.2.0",
