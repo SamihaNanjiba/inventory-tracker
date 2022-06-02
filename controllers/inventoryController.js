@@ -8,9 +8,12 @@ const getInventories = asyncHandler(async (req, res) => {
   // returns all items
   // const inventories = await Inventory.find();
 
-  // returns only the items that are not soft deleted
-  const inventories = await Inventory.find({ is_deleted: false });
-
+  // returns the items that are not deleted when is_deleted: false,
+  // if is_deleted:true, returns deleted items
+  let filters = {
+    is_deleted: req.query.is_deleted,
+  };
+  const inventories = await Inventory.find(filters);
   res.status(200).json(inventories);
 });
 
@@ -25,10 +28,6 @@ const setInventory = asyncHandler(async (req, res) => {
   if (!req.body.count) {
     res.status(400);
     throw new Error("Please enter the count of the item");
-  }
-  if (!req.body.is_deleted) {
-    res.status(400);
-    throw new Error("Please enter the status of the item");
   }
 
   const inventory = await Inventory.create({
@@ -45,8 +44,8 @@ const setInventory = asyncHandler(async (req, res) => {
 //@route    PUT /api/inventories/:id
 //@access   Public
 const updateInventory = asyncHandler(async (req, res) => {
+  console.log(req.params);
   const inventory = await Inventory.findById(req.params.id);
-
   if (!inventory) {
     res.status(400);
     throw new Error("inventory not found");
@@ -54,14 +53,12 @@ const updateInventory = asyncHandler(async (req, res) => {
 
   const updatedInventory = await Inventory.findByIdAndUpdate(
     req.params.id,
-    req.body,
-    {
-      new: true,
-    }
-  ); //new:true will create if it doesn't exist
+    req.body
+  );
   res.status(200).json(updatedInventory);
 });
 
+// For Hard delete
 //@desc     Delete inventory
 //@route    DELETE /api/inventories/:id
 //@access   Public
@@ -73,35 +70,11 @@ const deleteInventory = asyncHandler(async (req, res) => {
     throw new Error("inventory not found");
   }
 
-  // const deletedInventory = await inventory.findByIdAndDelete(req.params.id);
-  // res.status(200).json(deletedinventory);
-
-  // Soft delete
-  const deletedInventory = await inventory.findByIdAndUpdate(
-    req.params.id,
-    req.body
-  );
-
   // Hard delete
-  // const deletedInventory = await inventory.remove();
+  const deletedInventory = await inventory.findByIdAndDelete(req.params.id);
+  res.status(200).json(deletedinventory);
 
   res.status(200).json({ id: req.params.id });
-});
-
-const restoreInventory = asyncHandler(async (req, res) => {
-  const inventory = await Inventory.findById(req.params.id);
-
-  if (!inventory) {
-    res.status(400);
-    throw new Error("inventory not found");
-  }
-
-  const updatedInventory = await Inventory.findByIdAndUpdate(
-    req.params.id,
-    req.body
-  );
-
-  res.status(200).json(updatedInventory);
 });
 
 module.exports = {
@@ -109,5 +82,4 @@ module.exports = {
   setInventory,
   updateInventory,
   deleteInventory,
-  restoreInventory,
 };

@@ -11,6 +11,8 @@ router.get("/", getInventories);
 router.post("/", setInventory);
 
 router.put("/:id", updateInventory);
-router.delete("/:id", deleteInventory);
+
+// Only needed for hard delete
+// router.delete("/:id", deleteInventory);
 
 module.exports = router;
