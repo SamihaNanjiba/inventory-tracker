@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.INVENTORY_URI);
+    const conn = await mongoose.connect(process.env.INVENTORY_URI, { useNewUrlParser: true });
     console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline); //.cyan.underline from colors package
   } catch (error) {
     console.log(error);

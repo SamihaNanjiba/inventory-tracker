@@ -44,7 +44,6 @@ const setInventory = asyncHandler(async (req, res) => {
 //@route    PUT /api/inventories/:id
 //@access   Public
 const updateInventory = asyncHandler(async (req, res) => {
-  console.log(req.params);
   const inventory = await Inventory.findById(req.params.id);
   if (!inventory) {
     res.status(400);
